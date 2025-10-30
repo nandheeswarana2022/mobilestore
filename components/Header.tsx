@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { User, View } from '../types';
 import { Icon } from './common/Icon';
@@ -7,9 +8,10 @@ interface HeaderProps {
   currentUser: User | null;
   setView: (view: View) => void;
   onLogout: () => void;
+  onOpenThemeModal: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ cartItemCount, currentUser, setView, onLogout }) => {
+export const Header: React.FC<HeaderProps> = ({ cartItemCount, currentUser, setView, onLogout, onOpenThemeModal }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -32,8 +34,11 @@ export const Header: React.FC<HeaderProps> = ({ cartItemCount, currentUser, setV
               ElectroMobile
             </button>
           </div>
-          <div className="flex items-center space-x-4">
-            <button onClick={() => setView(View.Cart)} className="relative rounded-full p-2 text-brand-text-secondary hover:text-brand-text-primary transition">
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            <button onClick={onOpenThemeModal} className="rounded-full p-2 text-brand-text-secondary hover:text-brand-text-primary transition" aria-label="Customize theme">
+                <Icon name="palette" className="h-6 w-6" />
+            </button>
+            <button onClick={() => setView(View.Cart)} className="relative rounded-full p-2 text-brand-text-secondary hover:text-brand-text-primary transition" aria-label="Open shopping cart">
               <Icon name="cart" className="h-6 w-6" />
               {cartItemCount > 0 && (
                 <span className="absolute top-0 right-0 block h-5 w-5 rounded-full bg-brand-primary text-xs font-medium text-white flex items-center justify-center transform translate-x-1/2 -translate-y-1/2">

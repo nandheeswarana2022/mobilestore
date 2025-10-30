@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from 'react';
+
+import React, { useState, useCallback, useEffect } from 'react';
 import { Product, CartItem, User, Order, View } from './types';
 import { Header } from './components/Header';
 import { ProductList } from './components/ProductList';
@@ -9,6 +10,7 @@ import { OrderConfirmation } from './components/OrderConfirmation';
 import { Login } from './components/Login';
 import { SignUp } from './components/SignUp';
 import { Profile } from './components/Profile';
+import { ThemeModal } from './components/ThemeModal';
 
 const App: React.FC = () => {
   const [view, setView] = useState<View>(View.Home);
@@ -19,6 +21,30 @@ const App: React.FC = () => {
   const [latestOrder, setLatestOrder] = useState<Order | null>(null);
   const [notification, setNotification] = useState<string>('');
   const [postLoginRedirect, setPostLoginRedirect] = useState<View | null>(null);
+
+  const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
+  const [themeColor, setThemeColor] = useState('#007AFF');
+
+  const hexToRgb = (hex: string): string => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+      ? `${parseInt(result[1], 16)} ${parseInt(result[2], 16)} ${parseInt(result[3], 16)}`
+      : '0 122 255'; // default to blue
+  };
+
+  const handleThemeChange = useCallback((color: string) => {
+    setThemeColor(color);
+    const rgbColor = hexToRgb(color);
+    document.documentElement.style.setProperty('--brand-primary-rgb', rgbColor);
+    localStorage.setItem('themeColor', color);
+  }, []);
+
+  useEffect(() => {
+    const savedThemeColor = localStorage.getItem('themeColor');
+    if (savedThemeColor) {
+      handleThemeChange(savedThemeColor);
+    }
+  }, [handleThemeChange]);
 
   const showNotification = (message: string) => {
     setNotification(message);
@@ -161,7 +187,16 @@ const App: React.FC = () => {
         <div className={`fixed top-20 right-4 z-50 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg transition-all duration-300 ${notificationClasses}`}>
             {notification}
         </div>
-      {showHeader && <Header cartItemCount={cartItemCount} currentUser={currentUser} setView={setView} onLogout={handleLogout} />}
+      {showHeader && <Header cartItemCount={cartItemCount} currentUser={currentUser} setView={setView} onLogout={handleLogout} onOpenThemeModal={() => setIsThemeModalOpen(true)} />}
+      <ThemeModal 
+        isOpen={isThemeModalOpen}
+        onClose={() => setIsThemeModalOpen(false)}
+        onSelectColor={(color) => {
+          handleThemeChange(color);
+          setIsThemeModalOpen(false);
+        }}
+        currentColor={themeColor}
+      />
       <main>
         {renderView()}
       </main>

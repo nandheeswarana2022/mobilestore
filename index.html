@@ -10,6 +10,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --brand-primary-rgb: 0 122 255;
+        --brand-secondary-rgb: 28 28 30;
+        --brand-background-rgb: 0 0 0;
+        --brand-surface-rgb: 18 18 18;
+        --brand-text-primary-rgb: 255 255 255;
+        --brand-text-secondary-rgb: 142 142 147;
+      }
+    </style>
     <script>
       tailwind.config = {
         theme: {
@@ -18,12 +28,12 @@
               sans: ['Inter', 'sans-serif'],
             },
             colors: {
-              'brand-primary': '#007AFF',
-              'brand-secondary': '#1c1c1e',
-              'brand-background': '#000000',
-              'brand-surface': '#121212',
-              'brand-text-primary': '#FFFFFF',
-              'brand-text-secondary': '#8e8e93',
+              'brand-primary': 'rgb(var(--brand-primary-rgb) / <alpha-value>)',
+              'brand-secondary': 'rgb(var(--brand-secondary-rgb) / <alpha-value>)',
+              'brand-background': 'rgb(var(--brand-background-rgb) / <alpha-value>)',
+              'brand-surface': 'rgb(var(--brand-surface-rgb) / <alpha-value>)',
+              'brand-text-primary': 'rgb(var(--brand-text-primary-rgb) / <alpha-value>)',
+              'brand-text-secondary': 'rgb(var(--brand-text-secondary-rgb) / <alpha-value>)',
             }
           }
         }
